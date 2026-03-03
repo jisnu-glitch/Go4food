@@ -3,3 +3,69 @@
 body{
     background-color: rgb(255, 253, 246);
 }
+
+/* --- Go4Food Landing Page Animations --- */
+
+/* 1. Retro Text Shadow for the Hero Title */
+.retro-text-shadow {
+  text-shadow: 4px 4px 0px #111827; /* Hard black shadow behind the gradient text */
+}
+
+/* 2. The High-End Logo Entrance & Continuous Float */
+@keyframes retroPopFloat {
+  0% {
+    transform: scale(0.1) rotate(-30deg) translateY(100px);
+    opacity: 0;
+  }
+  40% {
+    transform: scale(1.1) rotate(10deg) translateY(-20px);
+    opacity: 1;
+  }
+  60% {
+    transform: scale(0.95) rotate(-5deg) translateY(10px);
+  }
+  80% {
+    transform: scale(1.02) rotate(2deg) translateY(-5px);
+  }
+  100% {
+    transform: scale(1) rotate(0deg) translateY(0px);
+    opacity: 1;
+  }
+}
+
+@keyframes continuousFloat {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-15px) rotate(2deg);
+  }
+}
+
+.animate-retro-pop {
+  /* Pops in, then smoothly transitions into a continuous floating state */
+  animation: 
+    retroPopFloat 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards,
+    continuousFloat 4s ease-in-out 1.2s infinite;
+}
+
+/* 3. Slow rotation for the background circle behind the logo */
+@keyframes slowSpin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+.animate-slow-spin {
+  animation: slowSpin 30s linear infinite;
+}
+
+/* 4. Scroll Reveal Classes (Intersection Observer triggers these) */
+.animate-fade-up-hidden {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.animate-fade-up-active {
+  opacity: 1;
+  transform: translateY(0);
+}
