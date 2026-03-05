@@ -6,7 +6,7 @@ const AddFood = () => {
     const [price,setPrice]=useState(null)
     const {category,setCategory}=useState('')
     const [description,setDescription]=useState('')
-    const [selectedValue, setSelectedValue] = useState('option1');
+    const [selectedValue, setSelectedValue] = useState('In stock');
     const [selectedFile, setSelectedFile] = useState(null);
 
 
@@ -98,7 +98,7 @@ const AddFood = () => {
               <label className="block text-sm font-bold text-gray-700 mb-2 transition-colors group-focus-within:text-[#A0C878]">Availability</label>
                 <select value={selectedValue} onChange={handleChange}>
                 <option value="In stock">In stock</option>
-                <option value="In stock">Out of stock</option>
+                <option value="Out of stock">Out of stock</option>
             </select>
             </div>
 

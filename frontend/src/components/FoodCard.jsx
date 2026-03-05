@@ -1,7 +1,8 @@
 
 function FoodCard({ food }) {
   if (!food) return null;
-
+  console.log(food.image);
+  
   return (
     <div className="group relative w-full h-80 sm:h-96 rounded-3xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1">
 
