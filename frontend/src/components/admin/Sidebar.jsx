@@ -1,6 +1,6 @@
 import React from 'react';
 import { LayoutDashboard, Utensils, ClipboardList, Users, LogOut } from 'lucide-react';
-
+import LogoutButton from '../LogoutButton';
 const Sidebar = ({ activeTab, setActiveTab }) => {
   const menuItems = [
     { id: 'dashboard', label: 'Dashboard', icon: <LayoutDashboard size={20} /> },
@@ -32,10 +32,7 @@ const Sidebar = ({ activeTab, setActiveTab }) => {
         ))}
       </nav>
 
-      <button className="flex items-center gap-3 px-4 py-3 text-red-500 font-bold hover:bg-red-50 rounded-xl transition-all mt-auto">
-        <LogOut size={20} />
-        Logout
-      </button>
+      <LogoutButton></LogoutButton>
     </div>
   );
 };

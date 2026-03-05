@@ -9,6 +9,7 @@ const {
 } = require("../controllers/foodController");
 
 const { protect } = require("../middleware/authMiddleware");
+const upload = require("../middleware/upload")
 
 // Admin only middleware
 const isAdmin = (req, res, next) => {
@@ -18,9 +19,9 @@ const isAdmin = (req, res, next) => {
   next();
 };
 
-router.post("/", protect, isAdmin, createFood);
+router.post("/", protect, isAdmin, upload.single("image"), createFood);
 router.get("/", getFoods);
-router.put("/:id", protect, isAdmin, updateFood);
+router.put("/:id", protect, isAdmin, upload.single("image"),updateFood);
 router.delete("/:id", protect, isAdmin, deleteFood);
 router.post("/bulk",protect,isAdmin,createBulkFood);
 module.exports = router;

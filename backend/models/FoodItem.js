@@ -14,12 +14,17 @@ const foodItemSchema = new mongoose.Schema({
         required:true
     },
     description: {
-      type: String
+      type: String,
+      required:true
     },
     availability: {
       type: String,
       enum: ["In stock", "Out of stock"],
       default: "In stock"
+    },
+    image:{
+        type:String,
+        
     }
 
     

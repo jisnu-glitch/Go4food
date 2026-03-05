@@ -10,6 +10,7 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [error,setError]= useState("")
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -18,9 +19,9 @@ const Login = () => {
     try {
       const res = await API.post("/auth/login", { email, password });
       localStorage.setItem("user", JSON.stringify(res.data));
-      res.data.role === "admin" ? navigate("/admin") : navigate("/");
+      res.data.role === "admin" ? navigate("/admin") : navigate("/home");
     } catch (e) {
-      alert("Invalid credentials");
+      setError("Invalid email or password")
     } finally {
       setLoading(false);
     }
@@ -90,9 +91,12 @@ const Login = () => {
                 </div>
               </div>
 
+              {error && (
+                <p className="text-sm text-red-500 text-center">{error}</p>
+              )}
               <button 
                 disabled={loading}
-                className="mt-4 w-full bg-[#EF7822] text-white py-3.5 rounded-xl font-bold text-lg shadow-[0_4px_14px_0_rgba(239,120,34,0.39)] hover:bg-[#d96a1a] hover:shadow-[0_6px_20px_rgba(239,120,34,0.23)] hover:-translate-y-0.5 transition-all duration-200 disabled:opacity-70 disabled:hover:translate-y-0 flex justify-center items-center"
+                className="mt-4 w-full bg-[#EF7822] text-white py-3.5 rounded-xl font-bold text-lg shadow-[0_4px_14px_0_rgba(239,120,34,0.39)] hover:bg-[#f38231] hover:shadow-[0_6px_20px_rgba(239,120,34,0.23)] hover:-translate-y-0.5 transition-all duration-200 disabled:opacity-70 disabled:hover:translate-y-0 flex justify-center items-center"
               >
                 {loading ? (
                   <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
