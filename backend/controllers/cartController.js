@@ -1,39 +1,59 @@
 const Cart = require("../models/Cart");
-
+const FoodItem= require("../models/FoodItem")
 
 // ADD TO CART
+
 exports.addToCart = async (req, res) => {
   try {
-    const { food_id, quantity, price } = req.body;
 
-    let cart = await Cart.findOne({ user_id: req.user.id });
+    const { food_id, quantity } = req.body
 
-    if (!cart) {
-      cart = await Cart.create({
-        user_id: req.user.id,
-        items: [{ food_id, quantity, price }]
-      });
-    } else {
-      const existingItem = cart.items.find(
-        item => item.food_id.toString() === food_id
-      );
+    const food = await FoodItem.findById(food_id)
 
-      if (existingItem) {
-        existingItem.quantity += quantity;
-      } else {
-        cart.items.push({ food_id, quantity, price });
-      }
-
-      await cart.save();
+    if (!food) {
+      return res.status(404).json({ message: "Food not found" })
     }
 
-    res.json(cart);
+    let cart = await Cart.findOne({ user_id: req.user.id })
+
+    if (!cart) {
+      cart = new Cart({
+        user_id: req.user.id,
+        items: [{
+          food_id,
+          quantity,
+          price: food.price
+        }]
+      })
+    } 
+    else {
+
+      const item = cart.items.find(
+        i => i.food_id.toString() === food_id
+      )
+
+      if (item) {
+        item.quantity += quantity
+      } 
+      else {
+        cart.items.push({
+          food_id,
+          quantity,
+          price: food.price
+        })
+      }
+    }
+
+    // ⚠️ SAVE ALWAYS
+    await cart.save()
+
+    res.status(200).json(cart)
 
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Error adding to cart" });
+    console.error(error)
+    res.status(500).json({ message: "Error adding to cart" })
   }
-};
+}
 
 
 
@@ -41,8 +61,16 @@ exports.addToCart = async (req, res) => {
 exports.getCart = async (req, res) => {
   try {
 
-    const cart = await Cart.findOne({ user_id: req.user.id })
+    let cart = await Cart.findOne({ user_id: req.user.id })
       .populate("items.food_id");
+    
+
+    // If cart does not exist
+    if (!cart) {
+      return res.json({
+        items: []
+      });
+    }
 
     res.json(cart);
 
@@ -107,7 +135,6 @@ exports.updateQuantity = async (req, res) => {
 
     item.quantity = quantity;
 
-    // If quantity becomes 0 → remove item
     if (item.quantity <= 0) {
       cart.items = cart.items.filter(
         item => item.food_id.toString() !== food_id
@@ -116,9 +143,12 @@ exports.updateQuantity = async (req, res) => {
 
     await cart.save();
 
-    res.json(cart);
+    return res.status(200).json({
+      message: "Cart updated",
+      cart
+    });
 
   } catch (error) {
-    res.status(500).json({ message: "Error updating quantity" });
+    return res.status(500).json({ message: "Error updating quantity" });
   }
 };

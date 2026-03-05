@@ -1,17 +1,60 @@
 const Order = require('../models/Order')
-
+const Cart = require("../models/Cart")
 // Place Order
+
 exports.placeOrder = async (req, res) => {
-  const { orderItems, total_amount } = req.body;
+  try {
 
-  const order = await Order.create({
-    user: req.user._id,
-    orderItems,
-    total_amount
-  });
+    const cart = await Cart.findOne({ user_id: req.user.id })
 
-  res.status(201).json(order);
-};
+    if (!cart || cart.items.length === 0) {
+      return res.status(400).json({ message: "Cart is empty" })
+    }
+
+    // only selected items
+    const selectedItems = cart.items.filter(item => item.selected)
+
+    if (selectedItems.length === 0) {
+      return res.status(400).json({ message: "No items selected" })
+    }
+
+    // convert cart items → order items
+    const orderItems = selectedItems.map(item => ({
+      food: item.food_id,
+      quantity: item.quantity,
+      price: item.price
+    }))
+
+    // calculate total
+    const totalAmount = orderItems.reduce(
+      (sum, item) => sum + item.price * item.quantity,
+      0
+    )
+
+    // create order
+    const order = await Order.create({
+      user: req.user.id,
+      orderItems,
+      total_amount: totalAmount
+    })
+
+    // remove ordered items from cart
+    cart.items = cart.items.filter(item => !item.selected)
+
+    await cart.save()
+
+    res.status(201).json({
+      message: "Order placed successfully",
+      order
+    })
+
+  } catch (error) {
+    console.error(error)
+    res.status(500).json({ message: "Error placing order" })
+  }
+}
+
+
 
 // Get Logged-in User Orders
 exports.getMyOrders = async (req, res) => {
@@ -20,6 +63,8 @@ exports.getMyOrders = async (req, res) => {
 
   res.json(orders);
 };
+
+
 
 // Admin: Get All Orders
 exports.getAllOrders = async (req, res) => {
