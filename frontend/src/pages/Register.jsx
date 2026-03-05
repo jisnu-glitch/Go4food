@@ -28,7 +28,7 @@ const Register = () => {
       });
       
       localStorage.setItem("user", JSON.stringify(res.data));
-      res.data.role === 'admin' ? navigate('/admin') : navigate('/');
+      res.data.role === 'admin' ? navigate('/admin') : navigate('/home');
     } catch (error) {
       console.error(error);
       alert("Registration failed. Please try again.");

@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { Search, ShoppingCart, ShoppingBag} from "lucide-react";
+import { Search, ShoppingCart, ShoppingBag, LogOut} from "lucide-react";
 import API from "../services/api";
 import FoodCard from "../components/FoodCard";
 import { useNavigate} from "react-router-dom";
-
+import LogoutButton from "../components/LogoutButton";
 function Home() {
   const [foods, setFoods] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -52,13 +52,13 @@ function Home() {
 
         <button 
           className="flex-shrink-0 p-2 sm:p-3 bg-[#FAF6E9] hover:bg-[#DDEB9D] rounded-full transition-colors relative shadow-sm" 
-          onClick={() => navigate('/cart')} // You might want to change this to '/orders' later!
+          onClick={() => navigate('/orders')} // You might want to change this to '/orders' later!
         >
-          <ShoppingBag className="h-5 w-5 sm:h-6 sm:w-6 text-gray-700" />
+          <ShoppingBag className="h-5 w-5 sm:h-6 sm:w-6 text-gray-700" /> 
         </button>
 
+        <LogoutButton></LogoutButton>
         </div>
-        
 
           {/* Search Bar - Takes full width on mobile (order-last), expands in middle on larger screens */}
           <div className="w-full sm:w-auto sm:flex-1 max-w-2xl relative group order-3 sm:order-2">
