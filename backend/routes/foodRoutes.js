@@ -21,7 +21,7 @@ const isAdmin = (req, res, next) => {
 
 router.post("/", protect, isAdmin, upload.single("image"), createFood);
 router.get("/", getFoods);
-router.put("/:id", protect, isAdmin, updateFood);
+router.put("/:id", protect, isAdmin, upload.single("image"),updateFood);
 router.delete("/:id", protect, isAdmin, deleteFood);
 router.post("/bulk",protect,isAdmin,createBulkFood);
 module.exports = router;

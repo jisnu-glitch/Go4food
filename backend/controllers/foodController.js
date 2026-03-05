@@ -48,20 +48,33 @@ exports.createBulkFood = async (req, res) => {
 
 // Get All Food
 exports.getFoods = async (req,res)=>{
+  try{
     const foods= await FoodItem.find()
-    res.json(foods)
+
+    res.json(foods)}
+    catch(e){
+      res.status(404).json({message:"food not loaded"})
+    }
 }
 
 // Update Food (Admin)
 exports.updateFood = async (req, res) => {
+  try{
   const food = await FoodItem.findById(req.params.id);
 
   if (!food) return res.status(404).json({ message: "Food not found" });
 
   Object.assign(food, req.body);
+  if (req.file) {
+      // If you are using Cloudinary or local storage, Multer adds the file info to req.file
+      food.image = req.file.path; 
+    }
   await food.save();
 
-  res.json(food);
+  res.json(food);}
+  catch(e){
+    res.status(500).json({ message: "Server error during update", error: error.message });
+  }
 };
 
 
