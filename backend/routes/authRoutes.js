@@ -22,9 +22,7 @@ router.get("/check-admin",protect,(req,res)=>{
     }
     res.status(403).json({message:"Not a admin"})
 })
-router.post("/logout", (req, res) => {
-  res.json({ message: "Logged out successfully" });
-});
+
 
 
 module.exports = router;

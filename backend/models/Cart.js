@@ -13,8 +13,14 @@ const cartItemSchema = new mongoose.Schema({
   price: {
     type: Number,
     required: true
+  },
+  selected:{
+    type:Boolean,
+    default:true
   }
-});
+  
+},
+{ timestamps: true });
 
 const cartSchema = new mongoose.Schema({
   user_id: {
@@ -23,6 +29,7 @@ const cartSchema = new mongoose.Schema({
     required: true
   },
   items: [cartItemSchema]
-});
+},
+{ timestamps: true });
 
 module.exports = mongoose.model("Cart", cartSchema);
