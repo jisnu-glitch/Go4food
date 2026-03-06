@@ -49,7 +49,7 @@ const Register = () => {
             {/* Logo Area */}
             <div className="flex justify-center mb-6">
               <img 
-                src="../assets/logo.jpg" 
+                src="/logo.jpg" 
                 alt="Go4Food Logo" 
                 className="h-16 sm:h-20 w-auto object-contain "
               />

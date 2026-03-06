@@ -34,7 +34,7 @@ function Home() {
           {/* Logo Area */}
           <div className="flex-shrink-0 cursor-pointer">
             <img 
-              src="../assets/logo.jpg" 
+              src="/logo.jpg" 
               alt="Go4Food Logo" 
               className="h-10 sm:h-12 md:h-14 w-auto object-contain transition-all"
             />

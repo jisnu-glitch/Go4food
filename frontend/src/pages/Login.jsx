@@ -41,7 +41,7 @@ const Login = () => {
             
             <div className="flex justify-center mb-6">
               <img 
-                src="../assets/logo.jpg" 
+                src="/logo.jpg" 
                 alt="Go4Food Logo" 
                 className="h-20 w-auto object-contain "
               />
