@@ -17,13 +17,4 @@ app.use("/api/uploads", express.static('uploads'))
 app.use('/api/cart',require('./routes/cartRoutes'))
 app.use('/api/users',require('./routes/userRoutes'))
 
-
-const PORT = process.env.PORT || 5000
-
-app.listen(PORT,()=>{
-    console.log(`SERVER RUNNING ON PORT ${PORT}`)
-})
-
-app.get("/", (req, res) => {
-  res.send("API is running...");
-});
+module.exports = app
