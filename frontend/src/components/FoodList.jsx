@@ -60,7 +60,7 @@ const FoodList = ({ refreshTrigger, onEdit }) => {
                         <div className="relative h-48 overflow-hidden bg-gray-100">
                             {food.image ? (
                                 <img 
-                                    src={`${BASE_URL}/${food.image}`} 
+                                    src={food.image} 
                                     alt={food.name} 
                                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                                 />

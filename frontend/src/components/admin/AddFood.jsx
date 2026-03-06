@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import API from '../../services/api'
 import FoodList from "../FoodList"
-import { ImagePlus, ArrowRight, X } from 'lucide-react';
+import { ImagePlus, ArrowRight, X , CheckCircle} from 'lucide-react';
 
 const AddFood = () => {
     const [name, setName] = useState('')
@@ -10,10 +10,10 @@ const AddFood = () => {
     const [description, setDescription] = useState('')
     const [selectedValue, setSelectedValue] = useState('In stock');
     const [selectedFile, setSelectedFile] = useState(null);
-
+    const [loading,setLoading]= useState(false)
     const [editingId, setEditingId] = useState(null);
     const [refreshTrigger, setRefreshTrigger] = useState(false);
-
+    const [success,setSuccess]=useState(false)
     const handleChange = (event) => {
         setSelectedValue(event.target.value);
     };
@@ -49,6 +49,7 @@ const AddFood = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setLoading(true)
         try {
             const formData = new FormData();
             formData.append("name", name);
@@ -62,11 +63,19 @@ const AddFood = () => {
             }
 
             if (editingId) {
-                await API.put(`/foods/${editingId}`, formData);
-                alert("Food updated successfully");
+                await API.put(`/foods/${editingId}`, formData,);
+                setLoading(false)
+                setSuccess(true)
+                setTimeout(()=>{
+                  setSuccess(false)
+                },2000)
             } else {
                 await API.post("/foods", formData);
-                alert("Food added successfully");
+                setLoading(false)
+                setSuccess(true)
+                setTimeout(()=>{
+                  setSuccess(false)
+                },2000)
             }
 
             resetForm();
@@ -78,13 +87,44 @@ const AddFood = () => {
     };
 
     return (
-        /* RESPONSIVE FIX: 
-           - Removed fixed 'ml-64'
-           - Added 'lg:ml-64' (only shifts for sidebar on large screens)
-           - Added responsive padding 'p-4 md:p-8'
-        */
+        
         <div className="md:p-8 bg-[#FFFDF6] min-h-screen  flex flex-col items-center">
             
+
+            {/* --- Success Toast --- */}
+            {success && (
+            <div className="fixed inset-0 z-[100] flex items-center justify-center pointer-events-none p-6">
+              <style>{`
+                @keyframes toastPop {
+                  0% { transform: scale(0.9) translateY(20px); opacity: 0; }
+                  100% { transform: scale(1) translateY(0); opacity: 1; }
+                }
+                .animate-toast { animation: toastPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+              `}</style>
+
+              <div className="animate-toast pointer-events-auto bg-[#A0C878]/90 backdrop-blur-xl border-2 border-white/50 text-white px-8 py-5 rounded-[2.5rem] shadow-[0_20px_50px_rgba(160,200,120,0.4)] flex flex-col items-center gap-3">
+                {/* Icon Circle */}
+                <div className="bg-white rounded-full p-3 shadow-inner">
+                  <CheckCircle size={32} className="text-[#A0C878]" strokeWidth={3} />
+                </div>
+                
+                <div className="text-center">
+                  <h3 className="text-xl font-black tracking-tight uppercase">Success!</h3>
+                  <p className="text-sm font-bold opacity-90">Your dish is live on the menu</p>
+                </div>
+                
+                {/* Decorative progress bar at the bottom */}
+                <div className="absolute bottom-0 left-0 h-1.5 bg-white/30 rounded-full animate-[shrink_3s_linear_forwards]" style={{ width: '100%' }}>
+                  <style>{`
+                    @keyframes shrink {
+                      from { width: 100%; }
+                      to { width: 0%; }
+                    }
+                  `}</style>
+                </div>
+              </div>
+            </div>
+)}
             {/* Header: Responsive width */}
             <header className="mb-8 md:mb-10 w-full max-w-4xl flex justify-between items-center">
                 <h1 className="text-2xl md:text-3xl font-bold text-gray-800 tracking-tight">
@@ -156,11 +196,11 @@ const AddFood = () => {
                         </div>
 
                         <div className="pt-4">
-                            <button 
+                            <button disabled={loading}
                                 type="submit"
                                 className={`w-full ${editingId ? 'bg-[#EF7822] text-white' : 'bg-[#A0C878] text-white'} hover:opacity-90 font-bold py-4 md:py-5 rounded-2xl shadow-lg transition-all active:scale-[0.98] text-base md:text-lg flex items-center justify-center gap-2 group`}
                             >
-                                <span>{editingId ? 'Update Dish' : 'Save to Menu'}</span>
+                                <span>{loading ? "Uploading..." :editingId ? 'Update Dish' : 'Save to Menu' }</span>
                                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                             </button>
                         </div>

@@ -36,7 +36,7 @@ function FoodCard({ food }) {
       {/* Image */}
       {food.image ? (
         <img
-          src={`${BASE_URL}/${food.image}`}
+          src={food.image}
           alt={food.name}
           className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
         />

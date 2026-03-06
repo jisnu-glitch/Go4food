@@ -5,8 +5,7 @@ const FoodItem = require('../models/FoodItem')
 exports.createFood = async (req, res) => {
   try {
     const {name, price, category, description, availability } = req.body;
-
-    const image= req.file ? `uploads/${req.file.filename}` :null
+    const image= req.file ? req.file.path :null
     // Check if body is actually received
     if (!name) {
       return res.status(400).json({ message: "Name is required" });
