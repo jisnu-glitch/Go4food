@@ -7,8 +7,6 @@ function FoodCard({ food }) {
   const [quantity, setQuantity] = useState(0);
 
   if (!food) return null;
-  console.log(food.image);
-  
   const handleAddToCart = async () => {
   
   // 1️⃣ Update UI immediately
