@@ -10,7 +10,6 @@ const Register = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [role, setRole] = useState("user");
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
@@ -24,11 +23,10 @@ const Register = () => {
         name,
         email,
         password,
-        role
       });
       
       localStorage.setItem("user", JSON.stringify(res.data));
-      res.data.role === 'admin' ? navigate('/admin') : navigate('/home');
+      navigate('/home');
     } catch (error) {
       console.error(error);
       alert("Registration failed. Please try again.");
@@ -124,7 +122,7 @@ const Register = () => {
               </div>
 
               {/* Role Select */}
-              <div className="group">
+              {/* <div className="group">
                 <label className="block mb-1.5 text-sm font-bold text-gray-700 transition-colors group-focus-within:text-[#A0C878]">
                   Account Type
                 </label>
@@ -135,16 +133,16 @@ const Register = () => {
                     className="w-full px-4 py-3 sm:py-3.5 bg-[#FAF6E9] text-gray-800 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#A0C878] focus:bg-white transition-all border border-transparent cursor-pointer appearance-none"
                   >
                     <option value="user">Hungry User (Order Food)</option>
-                    <option value="admin">Restaurant Admin (Sell Food)</option>
+                    
                   </select>
                   {/* Custom Dropdown Arrow */}
-                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-500 group-focus-within:text-[#A0C878]">
+                  {/* <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-500 group-focus-within:text-[#A0C878]">
                     <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                       <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
                     </svg>
                   </div>
                 </div>
-              </div>
+              </div> */} 
 
               {/* Sign Up Button */}
               <button 

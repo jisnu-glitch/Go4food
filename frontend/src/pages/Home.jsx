@@ -28,7 +28,7 @@ function Home() {
     <div className="min-h-screen bg-[#FFFDF6] font-sans text-gray-800">
       
       {/* 1. Header / Navigation - Now wraps search to a new line on mobile */}
-      <header className="sticky top-0 z-20 bg-[white]/95 backdrop-blur-md shadow-sm border-b border-[#FAF6E9]">
+      <header className="sticky top-0 z-20 bg-[white] backdrop-blur-md shadow-sm border-b border-[#FAF6E9]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 sm:py-4 flex flex-wrap items-center justify-between gap-y-4 gap-x-4">
           
           {/* Logo Area */}
@@ -80,7 +80,7 @@ function Home() {
         
         {/* 2. Hero / Banner Section - Fluid height and typography */}
         <section className="mb-8 sm:mb-12 relative overflow-hidden rounded-2xl sm:rounded-3xl shadow-md group cursor-pointer">
-          <div className="bg-gradient-to-r from-[#DDEB9D] to-[#A0C878] py-12 sm:py-16 md:h-64 flex flex-col items-center justify-center text-center px-4 sm:px-8 transition-transform duration-500 hover:scale-[1.01]">
+          <div className="bg-gradient-to-r from-[#f88f49] to-[#A0C878] py-12 sm:py-16 md:h-64 flex flex-col items-center justify-center text-center px-4 sm:px-8 transition-transform duration-500 hover:scale-[1.01]">
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-[#FFFDF6] drop-shadow-md mb-3 sm:mb-4">
               Your hunger, delivered.
             </h1>

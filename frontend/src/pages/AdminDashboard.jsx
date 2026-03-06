@@ -2,25 +2,28 @@ import React, { useState } from 'react';
 import Sidebar from '../components/admin/Sidebar';
 import AddFood from '../components/admin/AddFood';
 import OrdersTable from '../components/admin/OrdersTable';
-import UsersTable from '../components/admin/UsersTable'; // Create this similarly to Orders
+import UsersTable from '../components/admin/UsersTable';
 
 const AdminDashboard = () => {
-  // Use state to track which "page" or "tab" is active
   const [activeTab, setActiveTab] = useState('dashboard');
 
-  // This function decides which component to render in the main area
   const renderContent = () => {
+    {/* IMPORTANT: Remove hardcoded 'ml-64' from inside your sub-components 
+        (like OrdersTable.jsx) and let this container handle the spacing.
+    */}
+    const contentClasses = "p-4 md:p-8 pt-24 lg:pt-8 lg:ml-64 min-h-screen transition-all";
+
     switch (activeTab) {
       case 'add-food':
-        return <AddFood />;
+        return <div className={contentClasses}><AddFood /></div>;
       case 'orders':
-        return <OrdersTable />;
+        return <div className={contentClasses}><OrdersTable /></div>;
       case 'users':
-        return <UsersTable />;
+        return <div className={contentClasses}><UsersTable /></div>;
       default:
         return (
-          <div className="p-8 ml-64">
-            <h1 className="text-3xl font-black uppercase">Welcome, Admin</h1>
+          <div className={contentClasses}>
+            <h1 className="text-2xl md:text-3xl font-black uppercase text-gray-800">Welcome, Admin</h1>
             <p className="mt-4 text-gray-600">Select an option from the sidebar to manage your store.</p>
           </div>
         );
@@ -28,14 +31,12 @@ const AdminDashboard = () => {
   };
 
   return (
-    <div className="flex">
-      {/* The Sidebar stays visible at all times */}
+    <div className="bg-[#FFFDF6] min-h-screen">
       <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} />
       
-      {/* The main content area changes dynamically */}
-      <div className="flex-1">
+      <main className="flex-1">
         {renderContent()}
-      </div>
+      </main>
     </div>
   );
 };

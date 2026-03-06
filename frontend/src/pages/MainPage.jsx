@@ -1,82 +1,102 @@
 import React from 'react';
-import { ArrowRight } from 'lucide-react'; // Optional icon for the button
-import { useNavigate } from 'react-router-dom'; // Assuming you use react-router for navigation
+import { ArrowRight } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import SplitText from '../components/react-bits/SplitText'; 
+import FadeContent from '../components/react-bits/FadeContent'; 
 
 const MainPage = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="bg-[#FFFDF6] font-sans text-gray-800 selection:bg-[#EF7822] selection:text-white">
+    <div className="bg-[#FFFDF6] font-sans text-gray-800 min-h-screen flex flex-col items-center justify-center overflow-hidden py-12">
       
-      {/* --- High-End Modern Animations --- */}
+      {/* --- Enhanced High-Speed & Color Animations --- */}
       <style>{`
-        /* Smooth, staggered entrance for the text & logo */
-        @keyframes modernEntrance {
-          0% { opacity: 0; transform: translateY(30px) scale(0.98); }
-          100% { opacity: 1; transform: translateY(0) scale(1); }
+        @keyframes perspectiveEnter {
+          0% { opacity: 0; transform: perspective(1000px) rotateX(-10deg) translateY(30px); }
+          100% { opacity: 1; transform: perspective(1000px) rotateX(0deg) translateY(0); }
         }
-        .animate-modern-entrance {
-          animation: modernEntrance 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
-        .delay-100 { animation-delay: 100ms; }
-        .delay-200 { animation-delay: 200ms; }
-
-        /* Gentle continuous wobble/float for the logo circle */
+        
         @keyframes gentleFloat {
           0%, 100% { transform: translateY(0px) rotate(0deg); }
-          50% { transform: translateY(-10px) rotate(1deg); }
+          50% { transform: translateY(-20px) rotate(2deg); }
         }
-        .animate-gentle-float {
-          animation: gentleFloat 6s ease-in-out infinite;
+
+        /* Smooth color cycle between Orange (#EF7822) and Light Green (#A0C878) */
+        @keyframes titleColorCycle {
+          0%, 100% { color: #EF7822; }
+          50% { color: #DDEB9D; }
+        }
+
+        .animate-perspective { animation: perspectiveEnter 1s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        .animate-main-float { animation: gentleFloat 6s ease-in-out infinite; }
+        
+        .animated-title span {
+          animation: titleColorCycle 4s ease-in-out infinite;
+        }
+
+        .skew-perspective {
+          transform: skewX(-12deg);
         }
       `}</style>
 
-      {/* Main Hero Section */}
-      <section className="max-w-7xl mx-auto px-6 py-16 sm:py-24 flex flex-col-reverse lg:flex-row items-center justify-between gap-12 lg:gap-8 overflow-hidden">
-        
-        {/* Left Side: Storytelling & CTA */}
-        <div className="flex-1 text-center lg:text-left z-10 animate-modern-entrance">
-          <div className="inline-block bg-[#DDEB9D]/60 text-gray-800 font-bold px-4 py-1.5 rounded-full text-sm mb-6 tracking-wide shadow-inner">
-            ⚡ Delivery in under 30 minutes
-          </div>
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-gray-900 leading-[1.15] mb-6 tracking-tight">
-            Don't Just Eat. <br />
-            Make every bite an <span className="text-[#A0C878]">adventure.</span>
-          </h1>
-          <p className="text-lg text-gray-500 mb-10 max-w-lg mx-auto lg:mx-0 leading-relaxed delay-100 opacity-0 animate-modern-entrance" style={{ animationFillMode: 'forwards' }}>
-            Discover the best food and drinks in your city. Freshly prepared, carefully packaged, and delivered at banana-speed.
-          </p>
-          
-          {/* Main CTA (Orange, directing to login) */}
-          <button 
-            onClick={() => navigate('/login')}
-            className="group delay-200 opacity-0 animate-modern-entrance bg-[#EF7822] text-white px-10 py-4 rounded-full font-bold text-lg shadow-[0_8px_30px_rgba(239,120,34,0.3)] hover:shadow-[0_12px_25px_rgba(239,120,34,0.4)] hover:-translate-y-1 transition-all duration-300 flex items-center justify-center gap-2 mx-auto lg:mx-0"
-            style={{ animationFillMode: 'forwards' }}
-          >
-            Get Started
-            <ArrowRight className="w-5 h-5 group-hover:translate-x-1.5 transition-transform" />
-          </button>
-        </div>
-
-        {/* Right Side: The Modified Banana Circle Logo */}
-        <div className="flex-1 flex justify-center items-center relative animate-modern-entrance delay-100 opacity-0" style={{ animationFillMode: 'forwards' }}>
-          
-          {/* Subtle blurred shadow background element for depth */}
-          <div className="absolute w-[280px] h-[280px] sm:w-[380px] sm:h-[380px] md:w-[420px] md:h-[420px] rounded-full bg-[#EF7822] filter blur-[100px] opacity-20 transform -translate-x-10 translate-y-10 scale-90"></div>
-          
-          {/* The MAIN ELEMENT: Solid Orange Circle on the Right Side */}
-          <div className="relative z-10 rounded-full aspect-square w-full max-w-[280px] sm:max-w-[380px] md:max-w-[420px] bg-[#ff6a00] flex items-center justify-center shadow-2xl border-[12px] border-white/80 backdrop-blur-sm animate-gentle-float">
-            
-            {/* The standalone running banana character inside the circle */}
+      {/* 1. Brand Hero Section: Responsive Layout */}
+      <div className="flex flex-col lg:flex-row items-center justify-center w-full max-w-7xl px-6 gap-6 lg:gap-12">
+  
+        {/* ROW 1: The Mascot Circle (Always on top in mobile) */}
+        <div className="relative animate-main-float order-1">
+          {/* Large Circle - Adjusted sizes for better mobile fit */}
+          <div className="relative z-10 w-[240px] h-[240px] sm:w-[320px] sm:h-[320px] lg:w-[440px] lg:h-[440px] rounded-full bg-gradient-to-br from-[#ff8a00] to-[#EF7822] flex items-center justify-center shadow-2xl border-[8px] sm:border-[12px] border-white overflow-hidden">
             <img 
-              src="/main3.png" // MUST exist in your /public folder
-              alt="Go4Food Fast Delivery" 
-              className="w-[100%] h-[100%] object-contain transform translate-y-[-5px]"
+              src="/main3.png" 
+              alt="Mascot" 
+              className="w-[90%] h-[90%] object-contain"
             />
           </div>
         </div>
 
-      </section>
+        {/* ROW 2: The Title (Drops below circle on mobile) */}
+        <div className="skew-perspective text-center lg:text-left order-2">
+          <SplitText
+            text="Go4Food"
+
+            className="animated-title text-6xl sm:text-8xl lg:text-[11rem] font-black tracking-tighter italic leading-none"
+            delay={80}
+            animationStepDuration={0.3}
+          />
+        </div>
+      </div>
+
+      {/* 2. Content & CTA Section */}
+      <div className="w-full max-w-2xl px-6 text-center z-20">
+        <FadeContent blur={true} duration={1000} easing="ease-out">
+          <div className="space-y-8">
+            
+            
+            <p className="text-xl md:text-2xl text-gray-500 leading-relaxed font-medium">
+              Don't just eat. Make every bite an <span className="text-[#A0C878] font-bold">adventure</span>. 
+              Discover flavors delivered in under 30 minutes.
+            </p>
+
+            <button 
+              onClick={() => navigate('/login')}
+              className="group relative bg-[#EF7822] text-white px-14 py-5 rounded-full font-black text-2xl shadow-[0_20px_40px_rgba(239,120,34,0.35)] hover:shadow-[0_25px_50px_rgba(239,120,34,0.45)] hover:-translate-y-2 transition-all duration-300 flex items-center justify-center gap-3 mx-auto"
+            >
+              Get Started
+              <ArrowRight className="w-7 h-7 group-hover:translate-x-2 transition-transform" />
+              
+              {/* Animated highlight beam */}
+              <div className="absolute inset-0 w-full h-full bg-white/10 rounded-full scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-500"></div>
+            </button>
+          </div>
+        </FadeContent>
+      </div>
+
+      {/* 3. Decorative Background Perspective Text */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden select-none opacity-[0.03] z-0">
+        <div className="absolute -left-10 top-1/4 text-[15rem] font-black italic -rotate-12">FAST</div>
+        <div className="absolute -right-10 bottom-1/4 text-[15rem] font-black italic -rotate-12">FRESH</div>
+      </div>
 
     </div>
   );
