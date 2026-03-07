@@ -44,7 +44,7 @@ const Register = () => {
       {/* Main Registration Card */}
       <div className="w-full max-w-md relative z-10 my-8">
         <FadeContent blur={true} duration={1000} easing="cubic-bezier(0.16, 1, 0.3, 1)" initialOpacity={0}>
-          <div className="bg-white/80 backdrop-blur-xl p-8 sm:p-10 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-[#FAF6E9]">
+          <div className="bg-white backdrop-blur-xl p-8 sm:p-10 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-[#FAF6E9]">
             
             {/* Logo Area */}
             <div className="flex justify-center mb-6">

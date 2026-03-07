@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { House, ShoppingBag, Plus, Minus, ArrowRight, Trash2, Loader2, Utensils } from "lucide-react";
+import { House, ShoppingBag, Plus, Minus, ArrowRight, Trash2, Loader2, Utensils ,CheckCircle} from "lucide-react";
 import API from "../services/api";
 import { useNavigate } from "react-router-dom";
-
+import OrderDialog from "../components/OrderDialog";
 const BASE_URL = import.meta.env.VITE_API_URL;
 
 const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [showDialog,setShowDialog]=useState(false)
+  const [success, setSuccess] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -54,16 +56,26 @@ const Cart = () => {
     }
   };
 
-  const placeOrder = async () => {
-    try {
-      await API.post('/orders');
-      setCartItems([]);
-      alert('Order placed successfully!');
-      navigate('/orders');
-    } catch (e) {
-      console.error(e);
-      alert('Failed to place order');
-    }
+  // const placeOrder = async () => {
+  //   try {
+  //     await API.post('/orders');
+  //     setCartItems([]);
+  //     alert('Order placed successfully!');
+  //     navigate('/orders');
+  //   } catch (e) {
+  //     console.error(e);
+  //     alert('Failed to place order');
+  //   }
+  // };
+  const handleOrderSuccess = () => {
+    setShowDialog(false);
+    setCartItems([]);
+    // You can use your showToast here if integrated
+    setSuccess(true);
+    setTimeout(() => {
+    setSuccess(false);
+    navigate('/orders'); 
+  }, 3000);
   };
 
   const subtotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
@@ -214,7 +226,7 @@ const Cart = () => {
                   ? 'bg-gray-100 text-gray-400 cursor-not-allowed shadow-none' 
                   : 'bg-[#A0C878] hover:bg-[#8eb666] text-white shadow-[#A0C878]/30'
               }`} 
-              onClick={placeOrder}
+              onClick={() => setShowDialog(true)}
             >
               Place Order <ArrowRight size={24} />
             </button>
@@ -225,6 +237,48 @@ const Cart = () => {
           </div>
         </div>
       </div>
+
+      {/* Modern Success Toast Integration */}
+    {success && (
+      <div className="fixed inset-0 z-[150] flex items-center justify-center pointer-events-none p-6">
+        <style>{`
+          @keyframes toastPop {
+            0% { transform: scale(0.9) translateY(20px); opacity: 0; }
+            100% { transform: scale(1) translateY(0); opacity: 1; }
+          }
+          .animate-toast { animation: toastPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+          
+          @keyframes shrink {
+            from { width: 100%; }
+            to { width: 0%; }
+          }
+        `}</style>
+
+        <div className="animate-toast pointer-events-auto bg-[#A0C878]/95 backdrop-blur-xl border-2 border-white/50 text-white px-10 py-7 rounded-[3rem] shadow-[0_20px_50px_rgba(160,200,120,0.4)] flex flex-col items-center gap-4 relative overflow-hidden">
+          {/* Icon Circle */}
+          <div className="bg-white rounded-full p-4 shadow-inner">
+            <CheckCircle size={40} className="text-[#A0C878]" strokeWidth={3} />
+          </div>
+          
+          <div className="text-center">
+            <h3 className="text-2xl font-black tracking-tighter uppercase">Order Placed!</h3>
+            <p className="text-sm font-bold opacity-90">Delivery at speed has begun </p>
+          </div>
+          
+          {/* Animated Progress Bar */}
+          <div className="absolute bottom-0 left-0 h-1.5 bg-white/40 animate-[shrink_3s_linear_forwards]" />
+        </div>
+      </div>
+    )}
+      {/* --- The Order Dialog Modal --- */}
+      {showDialog && (
+        <OrderDialog 
+          cartItems={cartItems} 
+          totalAmount={total.toFixed(2)} 
+          onClose={() => setShowDialog(false)} 
+          onSuccess={handleOrderSuccess} 
+        />
+      )}
     </div>
   );
 };
