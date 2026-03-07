@@ -7,27 +7,29 @@ function FoodCard({ food }) {
   const [quantity, setQuantity] = useState(0);
   const [loading,setLoading] = useState(false)
   if (!food) return null;
-  const handleAddToCart = async () => {
-  
-  // 1️⃣ Update UI immediately
-  if(loading) return
 
-  try{
+    const handleAddToCart = async () => {
+  if (loading) return;
 
-    setLoading(true)
+  // show number immediately
+  setQuantity(prev => prev + 1);
 
-    await API.post("/cart/add",{
+  try {
+    setLoading(true);
+
+    await API.post("/cart/add", {
       food_id: food._id,
       quantity: 1
-    })
+    });
 
-    setQuantity(prev => prev + 1)
+  } catch (err) {
+    console.error(err);
 
-  }catch(err){
-    console.error(err)
+    // rollback if API fails
+    setQuantity(prev => prev - 1);
+  } finally {
+    setLoading(false);
   }
-
-  setLoading(false)
 };
 
   return (
