@@ -2,20 +2,18 @@ const Cart = require("../models/Cart");
 const FoodItem= require("../models/FoodItem")
 
 // ADD TO CART
-
 exports.addToCart = async (req, res) => {
   try {
+    const { food_id, quantity } = req.body;
 
-    const { food_id, quantity } = req.body
-
-    const food = await FoodItem.findById(food_id)
+    const food = await FoodItem.findById(food_id);
 
     if (!food) {
-      return res.status(404).json({ message: "Food not found" })
+      return res.status(404).json({ message: "Food not found" });
     }
 
-    // Try updating existing item
-    const cart = await Cart.findOneAndUpdate(
+    // First try to increment quantity if item already exists
+    const updatedCart = await Cart.findOneAndUpdate(
       {
         user_id: req.user.id,
         "items.food_id": food_id
@@ -23,15 +21,15 @@ exports.addToCart = async (req, res) => {
       {
         $inc: { "items.$.quantity": quantity }
       },
-      { new: true }
-    )
+      { returnDocument:"after" }
+    );
 
-    if (cart) {
-      return res.json(cart)
+    if (updatedCart) {
+      return res.json(updatedCart);
     }
 
-    // If item not in cart → push new item
-    const newCart = await Cart.findOneAndUpdate(
+    // If item doesn't exist → push it
+    const cart = await Cart.findOneAndUpdate(
       { user_id: req.user.id },
       {
         $push: {
@@ -42,16 +40,19 @@ exports.addToCart = async (req, res) => {
           }
         }
       },
-      { new: true, upsert: true }
-    )
+      {
+        new: true,
+        upsert: true
+      }
+    );
 
-    res.json(newCart)
+    res.json(cart);
 
   } catch (error) {
-    console.error(error)
-    res.status(500).json({ message: "Error adding to cart" })
+    console.error(error);
+    res.status(500).json({ message: "Error adding to cart" });
   }
-}
+};
 
 
 
