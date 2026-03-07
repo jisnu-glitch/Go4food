@@ -74,6 +74,7 @@ function FoodCard({ food }) {
 
           {/* Add Button */}
           <button
+          disabled={loading}
             onClick={handleAddToCart}
             className="shrink-0 bg-[#A0C878] hover:bg-[#EF7822] text-white p-1 w-15 h-15 rounded-full shadow-lg transition transform hover:scale-110"
           >
