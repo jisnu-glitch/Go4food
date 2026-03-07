@@ -5,26 +5,29 @@ const BASE_URL = import.meta.env.VITE_API_URL
 
 function FoodCard({ food }) {
   const [quantity, setQuantity] = useState(0);
-
+  const [loading,setLoading] = useState(false)
   if (!food) return null;
   const handleAddToCart = async () => {
   
   // 1️⃣ Update UI immediately
-  setQuantity(prev => prev + 1);
+  if(loading) return
 
-  try {
-    // 2️⃣ Call backend
-    await API.post("/cart/add", {
+  try{
+
+    setLoading(true)
+
+    await API.post("/cart/add",{
       food_id: food._id,
       quantity: 1
-    });
+    })
 
-  } catch (err) {
-    console.error("Error adding to cart", err);
+    setQuantity(prev => prev + 1)
 
-    // 3️⃣ Rollback if API fails
-    setQuantity(prev => prev - 1);
+  }catch(err){
+    console.error(err)
   }
+
+  setLoading(false)
 };
 
   return (

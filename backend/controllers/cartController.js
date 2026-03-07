@@ -41,7 +41,7 @@ exports.addToCart = async (req, res) => {
         }
       },
       {
-        new: true,
+        returnDocument:"after",
         upsert: true
       }
     );
