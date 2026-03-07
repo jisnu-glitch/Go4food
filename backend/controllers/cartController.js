@@ -14,40 +14,38 @@ exports.addToCart = async (req, res) => {
       return res.status(404).json({ message: "Food not found" })
     }
 
-    let cart = await Cart.findOne({ user_id: req.user.id })
-
-    if (!cart) {
-      cart = new Cart({
+    // Try updating existing item
+    const cart = await Cart.findOneAndUpdate(
+      {
         user_id: req.user.id,
-        items: [{
-          food_id,
-          quantity,
-          price: food.price
-        }]
-      })
-    } 
-    else {
+        "items.food_id": food_id
+      },
+      {
+        $inc: { "items.$.quantity": quantity }
+      },
+      { new: true }
+    )
 
-      const item = cart.items.find(
-        i => i.food_id.toString() === food_id
-      )
-
-      if (item) {
-        item.quantity += quantity
-      } 
-      else {
-        cart.items.push({
-          food_id,
-          quantity,
-          price: food.price
-        })
-      }
+    if (cart) {
+      return res.json(cart)
     }
 
-    // ⚠️ SAVE ALWAYS
-    await cart.save()
+    // If item not in cart → push new item
+    const newCart = await Cart.findOneAndUpdate(
+      { user_id: req.user.id },
+      {
+        $push: {
+          items: {
+            food_id,
+            quantity,
+            price: food.price
+          }
+        }
+      },
+      { new: true, upsert: true }
+    )
 
-    res.status(200).json(cart)
+    res.json(newCart)
 
   } catch (error) {
     console.error(error)
