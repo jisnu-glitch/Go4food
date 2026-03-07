@@ -3,7 +3,6 @@ import { House, ShoppingBag, Plus, Minus, ArrowRight, Trash2, Loader2, Utensils 
 import API from "../services/api";
 import { useNavigate } from "react-router-dom";
 import OrderDialog from "../components/OrderDialog";
-const BASE_URL = import.meta.env.VITE_API_URL;
 
 const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
@@ -79,8 +78,8 @@ const Cart = () => {
   };
 
   const subtotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
-  const deliveryFee = subtotal > 0 ? 5.00 : 0;
-  const tax = subtotal * 0.18;
+  const deliveryFee = 0.0
+  const tax = 0.0
   const total = subtotal + deliveryFee + tax;
 
   if (loading) {
