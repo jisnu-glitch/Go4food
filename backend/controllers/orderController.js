@@ -4,7 +4,7 @@ const Cart = require("../models/Cart")
 
 exports.placeOrder = async (req, res) => {
   try {
-
+    const {payment_method,address} = req.body
     const cart = await Cart.findOne({ user_id: req.user.id })
 
     if (!cart || cart.items.length === 0) {
@@ -35,7 +35,9 @@ exports.placeOrder = async (req, res) => {
     const order = await Order.create({
       user: req.user.id,
       orderItems,
-      total_amount: totalAmount
+      total_amount: totalAmount,
+      payment_method,
+      address
     })
 
     // remove ordered items from cart

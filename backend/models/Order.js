@@ -49,6 +49,11 @@ const orderSchema = new mongoose.Schema(
             default: "COD"
         },
 
+        address:{
+            type:String,
+            required:true
+        },
+
         order_date: {
         type: Date,
         default: Date.now

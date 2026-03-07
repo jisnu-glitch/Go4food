@@ -49,7 +49,6 @@ exports.createBulkFood = async (req, res) => {
 exports.getFoods = async (req,res)=>{
   try{
     const foods= await FoodItem.find()
-
     res.json(foods)}
     catch(e){
       res.status(404).json({message:"food not loaded"})
