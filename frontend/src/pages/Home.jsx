@@ -7,6 +7,7 @@ import LogoutButton from "../components/LogoutButton";
 function Home() {
   const [foods, setFoods] = useState([]);
   const [searchTerm,setSearchTerm]=useState("")
+  const [category,setCategory]=useState("all")
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const navigate = useNavigate()
@@ -28,14 +29,11 @@ function Home() {
   const filteredFoods = foods.filter((food) => {
   const term = searchTerm.toLowerCase().trim();
   
-  // If search is empty, show everything
-  if (!term) return true;
+  const searchMatch = !term || food.name.toLowerCase().includes(term)
 
-  // Otherwise, filter by name or category
-  return (
-    food.name.toLowerCase().includes(term) || 
-    food.category.toLowerCase().includes(term)
-  );
+  const categoryMatch = category === "all" || food.category.toLowerCase().trim() === category
+  // If search is empty, show everything
+  return categoryMatch && searchMatch
 });
 
   return (
@@ -110,16 +108,21 @@ function Home() {
         <section className="mb-8 sm:mb-10">
           {/* Note: Standard CSS included here to hide scrollbar for cross-browser support */}
           <div className="flex gap-3 sm:gap-4 overflow-x-auto pb-4 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-            <button className="px-5 sm:px-8 py-2.5 sm:py-3 text-sm sm:text-base bg-[#A0C878] text-[#FFFDF6] font-bold rounded-full shadow-md hover:bg-opacity-90 transition-all whitespace-nowrap">
+            <button className= {`px-5 sm:px-8 py-2.5 sm:py-3 text-sm sm:text-base font-bold rounded-full shadow-md  border-transparent whitespace-nowrap ${category === 'all' ? "bg-[#A0C878] text-[#FFFDF6]" : "bg-[#FAF6E9]  text-gray-700 hover:bg-[#DDEB9D] transition duration-200 cursor-pointer"}`}
+            onClick={()=>setCategory("all")}>
               All Categories
             </button>
-            <button className="px-5 sm:px-8 py-2.5 sm:py-3 text-sm sm:text-base bg-[#FAF6E9] text-gray-700 font-semibold rounded-full shadow-sm hover:bg-[#DDEB9D] transition-all border border-transparent hover:border-[#A0C878] whitespace-nowrap">
-              Healthy
+            <button 
+            className={`px-5 sm:px-8 py-2.5 sm:py-3 text-sm sm:text-base  font-semibold rounded-full shadow-sm border-transparent whitespace-nowrap ${category === 'sweet' ? "bg-[#A0C878] text-[#FFFDF6]" : "bg-[#FAF6E9]  text-gray-700 hover:bg-[#DDEB9D] transition duration-200 cursor-pointer "}`}
+            onClick={()=>setCategory('sweet')}>
+              Sweet
             </button>
-            <button className="px-5 sm:px-8 py-2.5 sm:py-3 text-sm sm:text-base bg-[#FAF6E9] text-gray-700 font-semibold rounded-full shadow-sm hover:bg-[#DDEB9D] transition-all border border-transparent hover:border-[#A0C878] whitespace-nowrap">
-              Fast Food
+            <button className={`px-5 sm:px-8 py-2.5 sm:py-3 text-sm sm:text-base  font-semibold rounded-full shadow-sm border-transparent whitespace-nowrap ${category === 'snack' ? "bg-[#A0C878] text-[#FFFDF6]" : "bg-[#FAF6E9]  text-gray-700 hover:bg-[#DDEB9D] transition duration-200 cursor-pointer"}`}
+            onClick={()=>setCategory('snack')}>
+              Snack
             </button>
-            <button className="px-5 sm:px-8 py-2.5 sm:py-3 text-sm sm:text-base bg-[#FAF6E9] text-gray-700 font-semibold rounded-full shadow-sm hover:bg-[#DDEB9D] transition-all border border-transparent hover:border-[#A0C878] whitespace-nowrap">
+            <button className={`px-5 sm:px-8 py-2.5 sm:py-3 text-sm sm:text-base  font-semibold rounded-full shadow-sm border-transparent whitespace-nowrap ${category === 'dessert' ? "bg-[#A0C878] text-[#FFFDF6]" : "bg-[#FAF6E9]  text-gray-700 hover:bg-[#DDEB9D] transition duration-200 cursor-pointer"}`}
+            onClick={()=>setCategory('dessert')}>
               Desserts
             </button>
           </div>
@@ -157,7 +160,7 @@ function Home() {
                   <span className="text-4xl">🔎</span>
                 </div>
                 <p className="text-center text-gray-400 text-lg font-medium">
-                  We couldn't find any matches for "{searchTerm}"
+                  We couldn't find any matches for "{`${category}: ${searchTerm}`}"
                 </p>
                 <button 
                   onClick={() => setSearchTerm('')} 
