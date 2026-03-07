@@ -64,6 +64,10 @@ exports.placeOrder = async (req, res) => {
 
     await cart.save()
 
+    return res.status(201).json({
+      message: "Order placed successfully", order
+    })
+
   } catch (error) {
     console.error(error)
     res.status(500).json({ message: "Error placing order" })

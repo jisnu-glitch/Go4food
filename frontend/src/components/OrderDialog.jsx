@@ -17,7 +17,7 @@ function OrderDialog({ cartItems, totalAmount, onClose, onSuccess }) {
         address,
         payment_method: paymentMethod
       });
-      onSuccess();
+      onSuccess()
     } catch (err) {
       console.error("Order failed", err);
       alert("Failed to place order");
