@@ -6,6 +6,7 @@ import { useNavigate} from "react-router-dom";
 import LogoutButton from "../components/LogoutButton";
 function Home() {
   const [foods, setFoods] = useState([]);
+  const [searchTerm,setSearchTerm]=useState("")
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const navigate = useNavigate()
@@ -23,6 +24,19 @@ function Home() {
 
     fetchFoods();
   }, []);
+
+  const filteredFoods = foods.filter((food) => {
+  const term = searchTerm.toLowerCase().trim();
+  
+  // If search is empty, show everything
+  if (!term) return true;
+
+  // Otherwise, filter by name or category
+  return (
+    food.name.toLowerCase().includes(term) || 
+    food.category.toLowerCase().includes(term)
+  );
+});
 
   return (
     <div className="min-h-screen bg-[#FFFDF6] font-sans text-gray-800">
@@ -68,6 +82,8 @@ function Home() {
             <input
               type="text"
               placeholder="Search food, restaurants..."
+              value={searchTerm}
+              onChange={(e)=>setSearchTerm(e.target.value)}
               className="w-full bg-[#FAF6E9] text-gray-700 rounded-full py-2.5 sm:py-3 pl-10 sm:pl-12 pr-6 text-sm sm:text-base border-2 border-transparent focus:outline-none focus:border-[#A0C878] transition-all shadow-inner"
             />
           </div>
@@ -107,30 +123,57 @@ function Home() {
               Desserts
             </button>
           </div>
-        </section>
+          </section>
 
-        {/* 4. Dynamic Data Section */}
-        <section>
-          <h2 className="text-2xl sm:text-3xl font-extrabold text-gray-800 mb-6 sm:mb-8">
-            Popular Near You
-          </h2>
-          
-          {loading ? (
-            <div className="flex justify-center items-center py-12 sm:py-20">
-              <p className="text-lg sm:text-xl text-[#A0C878] font-semibold animate-pulse">Loading fresh meals...</p>
+          <section className="px-4 md:px-0">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 sm:mb-8 gap-4">
+              <h2 className="text-2xl sm:text-3xl font-extrabold text-gray-800">
+                {searchTerm ? `Search results for "${searchTerm}"` : 'Popular Near You'}
+              </h2>
+              
+              {/* Dynamic Item Counter */}
+              {!loading && !error && (
+                <div className="bg-[#DDEB9D]/50 px-4 py-1.5 rounded-full text-xs font-bold text-[#A0C878] border border-[#A0C878]/20">
+                  {filteredFoods.length} {filteredFoods.length === 1 ? 'Dish' : 'Dishes'} Available
+                </div>
+              )}
             </div>
-          ) : error ? (
-            <div className="bg-red-50 border border-red-200 text-red-500 p-4 rounded-xl text-center text-sm sm:text-base">
-              {error}
-            </div>
-          ) : (
-            /* Updated Grid: 1 col on mobile, 2 on tablet, auto-fit on desktop. Min width dropped to 280px to prevent overflow on small phones */
-            <div className="grid gap-6 sm:gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-[repeat(auto-fill,minmax(280px,1fr))]">
-              {foods.map((food) => (
-                <FoodCard key={food._id} food={food} />
-              ))}
-            </div>
-          )}
+
+            {loading ? (
+              <div className="flex flex-col justify-center items-center py-12 sm:py-20 gap-4">
+                <div className="w-12 h-12 border-4 border-[#DDEB9D] border-t-[#A0C878] rounded-full animate-spin"></div>
+                <p className="text-lg sm:text-xl text-[#A0C878] font-semibold animate-pulse">
+                  Loading fresh meals...
+                </p>
+              </div>
+            ) : error ? (
+              <div className="bg-red-50 border border-red-200 text-red-500 p-6 rounded-3xl text-center">
+                <p className="font-bold">Oops! Something went wrong.</p>
+                <p className="text-sm opacity-80">{error}</p>
+              </div>
+            ) : filteredFoods.length === 0 ? (
+              <div className="flex flex-col items-center justify-center py-24 bg-gray-50/50 rounded-[3rem] border-2 border-dashed border-gray-200">
+                <div className="p-5 bg-white rounded-full shadow-sm mb-4">
+                  <span className="text-4xl">🔎</span>
+                </div>
+                <p className="text-center text-gray-400 text-lg font-medium">
+                  We couldn't find any matches for "{searchTerm}"
+                </p>
+                <button 
+                  onClick={() => setSearchTerm('')} 
+                  className="mt-4 text-[#A0C878] font-bold hover:underline"
+                >
+                  Clear Search
+                </button>
+              </div>
+            ) : (
+              /* The Dynamic Grid */
+              <div className="grid gap-6 sm:gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-[repeat(auto-fill,minmax(280px,1fr))]">
+                {filteredFoods.map((food) => (
+                  <FoodCard key={food._id} food={food} />
+                ))}
+              </div>
+            )}
         </section>
 
       </main>
