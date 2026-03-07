@@ -64,8 +64,6 @@ exports.getCart = async (req, res) => {
     let cart = await Cart.findOne({ user_id: req.user.id })
       .populate("items.food_id");
     
-    
-
     // If cart does not exist
     if (!cart) {
       return res.json({

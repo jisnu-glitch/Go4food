@@ -4,34 +4,54 @@ const Cart = require("../models/Cart")
 
 exports.placeOrder = async (req, res) => {
   try {
-    const {payment_method,address} = req.body
+
+    const { payment_method, address } = req.body
+
     const cart = await Cart.findOne({ user_id: req.user.id })
+      .populate("items.food_id")
 
     if (!cart || cart.items.length === 0) {
       return res.status(400).json({ message: "Cart is empty" })
     }
 
-    // only selected items
-    const selectedItems = cart.items.filter(item => item.selected)
+    // selected items
+    let selectedItems = cart.items.filter(item => item.selected)
 
     if (selectedItems.length === 0) {
       return res.status(400).json({ message: "No items selected" })
     }
 
-    // convert cart items → order items
+    // detect unavailable foods
+    const unavailableItems = selectedItems.filter(item => item.food_id === null)
+
+    if (unavailableItems.length > 0) {
+
+      // remove them from cart
+      cart.items = cart.items.filter(item => item.food_id !== null)
+
+      await cart.save()
+
+      // continue with valid items only
+      selectedItems = cart.items.filter(item => item.selected)
+    }
+
+    if (selectedItems.length === 0) {
+      return res.status(400).json({
+        message: "All selected items are unavailable"
+      })
+    }
+
     const orderItems = selectedItems.map(item => ({
-      food: item.food_id,
+      food: item.food_id._id,
       quantity: item.quantity,
       price: item.price
     }))
 
-    // calculate total
     const totalAmount = orderItems.reduce(
       (sum, item) => sum + item.price * item.quantity,
       0
     )
 
-    // create order
     const order = await Order.create({
       user: req.user.id,
       orderItems,
@@ -40,22 +60,15 @@ exports.placeOrder = async (req, res) => {
       address
     })
 
-    // remove ordered items from cart
     cart.items = cart.items.filter(item => !item.selected)
 
     await cart.save()
-
-    res.status(201).json({
-      message: "Order placed successfully",
-      order
-    })
 
   } catch (error) {
     console.error(error)
     res.status(500).json({ message: "Error placing order" })
   }
 }
-
 
 
 // Get Logged-in User Orders
