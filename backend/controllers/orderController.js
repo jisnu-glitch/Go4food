@@ -96,12 +96,19 @@ exports.getAllOrders = async (req, res) => {
 
 // Admin: Update Order Status
 exports.updateOrderStatus = async (req, res) => {
-  const order = await Order.findById(req.params.id);
+   try {
+    const order = await Order.findByIdAndUpdate(
+      req.params.id,
+      { status: req.body.status },
+      { returnDocument: "after"}
+    );
 
-  if (!order) return res.status(404).json({ message: "Order not found" });
-
-  order.status = req.body.status;
-  await order.save();
-
-  res.json(order);
+    if (!order)
+      return res.status(404).json({ message: "Order not found" });
+      res.json(order);
+  } 
+  catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Failed to update order status" });
+  }
 };
