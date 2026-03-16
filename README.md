@@ -55,6 +55,3 @@ Backend API: https://go4food-api.vercel.app
 
   
 
----
-
-## Project Structure
