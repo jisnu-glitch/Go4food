@@ -57,8 +57,8 @@ Backend API: https://go4food-api.vercel.app
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/jisnu-glitch/Go4foods.git
-   cd Go4foods
+   git clone https://github.com/jisnu-glitch/Go4food.git
+   cd Go4food
    ```
 
 2. **Backend Configuration**
@@ -101,7 +101,7 @@ Backend API: https://go4food-api.vercel.app
 ## Project Structure
 
 ```text
-Go4foods/
+Go4food/
 ├── backend/            # Express server and API logic
 │   ├── config/         # Database and middleware configuration
 │   ├── controllers/    # Route controllers
