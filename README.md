@@ -15,10 +15,6 @@ Go4food is a premium, full-stack food ordering application built with the MERN s
 - **Image Management**: Integrated with Cloudinary for efficient food image preservation and delivery.
 - **Modern UI/UX**: Built with Tailwind CSS 4.0 and Framer Motion for a fluid, professional experience.
 - **Fully Responsive**: Optimized for all screen sizes, from mobile devices to large desktops.
-=======
-# Go4Food – Food Ordering Web Application
-
-Go4Food is a full-stack food ordering web application built using the MERN stack. It allows users to browse food items, add them to a cart, place orders, and track their order history. Admins can manage food items through a dedicated admin dashboard.
 
 ---
 
@@ -26,14 +22,12 @@ Go4Food is a full-stack food ordering web application built using the MERN stack
 
 Frontend: https://go4food.vercel.app  
 Backend API: https://go4food-api.vercel.app
->>>>>>> e23bd094c2c53b65c0de0f38c942276611a2e624
 
 ---
 
 ## Tech Stack
 
 ### Frontend
-<<<<<<< HEAD
 - **Framework**: React 19 (Vite)
 - **Styling**: Tailwind CSS 4.0
 - **Animations**: Framer Motion
