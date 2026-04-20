@@ -20,8 +20,8 @@ Go4food is a premium, full-stack food ordering application built with the MERN s
 
 ## Live Demo
 
-Frontend: https://go4food.vercel.app  
-Backend API: https://go4food-api.vercel.app
+go4food: https://go4food.vercel.app  
+
 
 ---
 
